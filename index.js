@@ -52,9 +52,6 @@ function getWinners(callback, data) {
     let winners = [];
     callback(data).forEach(
         function(item) {
-/*             console.log(
-                item['Home Team Name'] + ': ' + item['Home Team Goals'] + ' | ' + item['Away Team Name'] + ': ' +  item['Away Team Goals']
-            ); */
             if(item['Home Team Goals'] > item['Away Team Goals']) {
                 winners.push(item['Home Team Name']);
             } else if (item['Home Team Goals'] < item['Away Team Goals']){
@@ -78,13 +75,27 @@ Parameters:
  */
 
 function getWinnersByYear(cbWin, cbYear) {
-    let winners = cbWin(getFinals, fifaData);
-    let years = cbYear(getFinals, fifaData);
-    return `In ${years}, ${winners} won the world cup!`
+    const winners = cbWin(getFinals, fifaData);
+    const years = cbYear(getFinals, fifaData);
+    const arr = [];
+    winners.forEach(
+        (win, indexOfWin) => {
+        arr.push(`In ${years[indexOfWin]}, ${win} won the world cup!`) ; 
+        }
+    )
+    /*
+    * worked but not reccommended if index order is important
+    *
+    * for (let i in winners, years){
+    * arr.push(`In ${years[i]}, ${winners[i]} won the world cup!`) ; 
+    * } 
+    */
+    return arr;
     
 };
-console.log('#### TASK 5 ####');
+console.log('#### TASK 6 ####');
 console.log(getWinnersByYear(getWinners, getYears));
+document.getElementById('task-6').innerHTML = getWinnersByYear(getWinners, getYears).join('<br />');
 
 /* Task 7: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
