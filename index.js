@@ -77,35 +77,28 @@ Parameters:
 function getWinnersByYear(cbWin, cbYear) {
     const winners = cbWin(getFinals, fifaData);
     const years = cbYear(getFinals, fifaData);
-    const arr = [];
-    winners.forEach(
-        (win, indexOfWin) => {
-        arr.push(`In ${years[indexOfWin]}, ${win} won the world cup!`) ; 
-        }
-    )
-    /*
-    * worked but not reccommended if index order is important
-    *
-    * for (let i in winners, years){
-    * arr.push(`In ${years[i]}, ${winners[i]} won the world cup!`) ; 
-    * } 
-    */
-    return arr;
-    
+    const arr = winners.map(
+        (win, index) => `In ${years[index]}, ${win} won the world cup!`
+        );
+    return arr;  
 };
+
 console.log('#### TASK 6 ####');
 console.log(getWinnersByYear(getWinners, getYears));
-document.getElementById('task-6').innerHTML = getWinnersByYear(getWinners, getYears).join('<br />');
+//document.getElementById('task-6').innerHTML = getWinnersByYear(getWinners, getYears).join('<br />');
 
 /* Task 7: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
-function getAverageGoals(/* code here */) {
-
-    /* code here */
+function getAverageGoals(data) {
+    const homeGoalsArr = data.map(val => val["Home Team Goals"]);
+    const awayGoalsArr = data.map(val => val["Away Team Goals"]);
+    const avgHome = homeGoalsArr.reduce((accumulator, value) => accumulator + value) / data.length;
+    const avgAway = awayGoalsArr.reduce((accumulator, value) => accumulator + value) / data.length;
+    return `Average goals scored per match: \n Home = ${Math.round(avgHome)} \n Away = ${Math.round(avgAway)}`;
 
 };
-
-getAverageGoals();
+console.log('#### TASK 7 ####')
+console.log(getAverageGoals(fifaData));
 
 /// STRETCH 🥅 //
 
@@ -114,13 +107,14 @@ getAverageGoals();
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-function getCountryWins(/* code here */) {
-
-    /* code here */
-
+function getCountryWins(data, init) {
+    const ctryArr = data.filter(val => init === val['Home Team Initials'] || init === val['Away Team Initials'])
+    //if ctryArr;
+    return ctryArr;
 };
-
-getCountryWins();
+console.log('#### STRETCH 1 ####')
+// example initials : GER, ANG, MEX, URU
+console.log(getCountryWins(fifaData, 'ANG'));
 
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
