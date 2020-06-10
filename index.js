@@ -1,7 +1,7 @@
 import { fifaData } from './fifa.js';
-console.log(fifaData);
+//console.log(fifaData);
 
-console.log('its working');
+//console.log('its working');
 // ⚽️ M  V P ⚽️ //
 
 /* Task 1: Investigate the data above. Practice accessing data by console.log-ing the following pieces of data 
@@ -36,10 +36,7 @@ console.log(getFinals(fifaData));
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
 function getYears(callback, data) {
-    let arr = [];
-    callback(data).forEach(item => {
-        arr.push(item.Year);
-    });
+    let arr = callback(data).map(item => item.Year);
     return arr;
 };
 
@@ -92,6 +89,7 @@ console.log(getWinnersByYear(getWinners, getYears));
 function getAverageGoals(data) {
     const homeGoalsArr = data.map(val => val["Home Team Goals"]);
     const awayGoalsArr = data.map(val => val["Away Team Goals"]);
+    //.reduce(param for starting/prev return value, current item value)
     const avgHome = homeGoalsArr.reduce((accumulator, value) => accumulator + value) / data.length;
     const avgAway = awayGoalsArr.reduce((accumulator, value) => accumulator + value) / data.length;
     return `Average goals scored per match: \n Home = ${Math.round(avgHome)} \n Away = ${Math.round(avgAway)}`;
@@ -107,14 +105,17 @@ console.log(getAverageGoals(fifaData));
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
+//  WIP
 function getCountryWins(data, init) {
-    const ctryArr = data.filter(val => init === val['Home Team Initials'] || init === val['Away Team Initials'])
-    //if ctryArr;
-    return ctryArr;
+    const ctryArr = data.filter(val => init === val['crtyWithFinals'] || init === val['Away Team Initials'])
+    const crtyWithFinals = ctryArr.filter(val => val.Stage === 'Final');
+    //let crtyWinners = crtyWithFinals.map((val, index) => val[Hom])
+    const winnersAll = getWinners(getFinals, data);
+    return crtyWithFinals;
 };
-console.log('#### STRETCH 1 ####')
+//console.log('#### STRETCH 1 ####')
 // example initials : GER, ANG, MEX, URU
-console.log(getCountryWins(fifaData, 'ANG'));
+//console.log(getCountryWins(fifaData, 'BRA'));
 
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
